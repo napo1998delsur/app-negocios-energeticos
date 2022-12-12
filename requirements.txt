@@ -2,11 +2,5 @@ streamlit
 pandas
 numpy
 seaborn
-altair
-vega-datasets
-pandas
-google-api-python-client
-google-auth
-google-auth-httplib2
-protobuf
-click==8
+plotly
+plotly.graph_objs

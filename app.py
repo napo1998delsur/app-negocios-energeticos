@@ -8,76 +8,78 @@ image = Image.open('delsur.png')
 st.image(image, caption='Delsur')
 
 
-
-
-from datetime import datetime
+import numpy as np
+import plotly.graph_objs as go
 
 import streamlit as st
-from vega_datasets import data
 
-from utils import chart, db
+st.title("Plotly examples")
 
-COMMENT_TEMPLATE_MD = """{} - {}
-> {}"""
+st.header("Chart with two lines")
 
-
-def space(num_lines=1):
-    """Adds empty lines to the Streamlit app."""
-    for _ in range(num_lines):
-        st.write("")
+trace0 = go.Scatter(x=[1, 2, 3, 4], y=[10, 15, 13, 17])
+trace1 = go.Scatter(x=[1, 2, 3, 4], y=[16, 5, 11, 9])
+data = [trace0, trace1]
+st.write(data)
 
 
-st.set_page_config(layout="centered", page_icon="💬", page_title="Commenting app")
+###
 
-# Data visualisation part
+st.header("Matplotlib chart in Plotly")
 
-st.title("💬 Commenting app")
+import matplotlib.pyplot as plt
 
-source = data.stocks()
-all_symbols = source.symbol.unique()
-symbols = st.multiselect("Choose stocks to visualize", all_symbols, all_symbols[:3])
+f = plt.figure()
+arr = np.random.normal(1, 1, size=100)
+plt.hist(arr, bins=20)
 
-space(1)
+st.plotly_chart(f)
 
-source = source[source.symbol.isin(symbols)]
-chart = chart.get_chart(source)
-st.altair_chart(chart, use_container_width=True)
 
-space(2)
+###
 
-# Comments part
+st.header("3D plot")
 
-conn = db.connect()
-comments = db.collect(conn)
+x, y, z = np.random.multivariate_normal(np.array([0, 0, 0]), np.eye(3), 400).transpose()
 
-with st.expander("💬 Open comments"):
+trace1 = go.Scatter3d(
+    x=x,
+    y=y,
+    z=z,
+    mode="markers",
+    marker=dict(
+        size=12,
+        color=z,  # set color to an array/list of desired values
+        colorscale="Viridis",  # choose a colorscale
+        opacity=0.8,
+    ),
+)
 
-    # Show comments
+data = [trace1]
+layout = go.Layout(margin=dict(l=0, r=0, b=0, t=0))
+fig = go.Figure(data=data, layout=layout)
 
-    st.write("**Comments:**")
+st.write(fig)
 
-    for index, entry in enumerate(comments.itertuples()):
-        st.markdown(COMMENT_TEMPLATE_MD.format(entry.name, entry.date, entry.comment))
 
-        is_last = index == len(comments) - 1
-        is_new = "just_posted" in st.session_state and is_last
-        if is_new:
-            st.success("☝️ Your comment was successfully posted.")
+###
 
-    space(2)
+st.header("Fancy density plot")
 
-    # Insert comment
+import numpy as np
+import plotly.figure_factory as ff
 
-    st.write("**Add your own comment:**")
-    form = st.form("comment")
-    name = form.text_input("Name")
-    comment = form.text_area("Comment")
-    submit = form.form_submit_button("Add comment")
+# Add histogram data
+x1 = np.random.randn(200) - 2
+x2 = np.random.randn(200)
+x3 = np.random.randn(200) + 2
 
-    if submit:
-        date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        db.insert(conn, [[name, comment, date]])
-        if "just_posted" not in st.session_state:
-            st.session_state["just_posted"] = True
-        st.experimental_rerun()
+# Group data together
+hist_data = [x1, x2, x3]
 
+group_labels = ["Group 1", "Group 2", "Group 3"]
+
+# Create distplot with custom bin_size
+fig = ff.create_distplot(hist_data, group_labels, bin_size=[0.1, 0.25, 0.5])
+
+# Plot!
