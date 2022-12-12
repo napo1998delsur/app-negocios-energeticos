@@ -2,4 +2,4 @@ streamlit
 pandas
 numpy
 seaborn
-plotly==4.14.3
+
