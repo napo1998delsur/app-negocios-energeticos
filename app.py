@@ -8,5 +8,3 @@ image = Image.open('delsur.png')
 st.image(image, caption='Delsur')
 
 
-
-!
