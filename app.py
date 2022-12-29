@@ -19,34 +19,19 @@ if uploaded_file is not None:
     st.write(dataframe)
 
 
+datos=pd.read_csv(uploaded_file)
 
 # Load  the model from disk
 
 if st.button("Predict"):
     pickle_in = open('modelinicial.pkl', 'rb')
     model = pickle.load(pickle_in)
-    predict=model.predict([[dataframe]])
-    
+    predict=model.predict([[datos]])
+  
 
 
-pred_df = pd.DataFrame(predict,columns=["Prediccion"])
-pred_df.to_csv('salidadatos.csv', header=True, index_label='id')
-st.write(pred_df)
 
 
-@st.cache
-def convert_df(pred_df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return pred_df.to_csv().encode('utf-8')
-
-csv = convert_df(pred_df)
-
-st.download_button(
-    label="Download data as CSV",
-    data=csv,
-    file_name='predicccion.csv',
-    mime='text/csv',
-)
 
 
 
