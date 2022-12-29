@@ -18,7 +18,6 @@ if uploaded_file is not None:
 
 
 
-test=pd.read_csv('model')
 
 
 
