@@ -2,6 +2,8 @@ import streamlit   as st
 import pandas as pd
 import pickle
 import numpy as np
+
+
 st.title('App de deteccion de fraudes')
 from PIL import Image
 image = Image.open('delsur.png')
@@ -23,18 +25,19 @@ if uploaded_file is not None:
 if st.button("Predict"):
     pickle_in = open('modelinicial.pkl', 'rb')
     model = pickle.load(pickle_in)
-    predict_2=model.predict(dataframe)
+    predict=model.predict([[dataframe]])
+    
 
-predict_2=model.predict(dataframe)
-pred_df = pd.DataFrame(predict_2,columns=["Prediccion"])
-pred_df.to_csv('salidadatos.csv', header=True, index_label='Id')
+
+pred_df = pd.DataFrame(predict,columns=["Prediccion"])
+pred_df.to_csv('salidadatos.csv', header=True, index_label='id')
 st.write(pred_df)
 
 
 @st.cache
-def convert_df(df):
+def convert_df(pred_df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode('utf-8')
+    return pred_df.to_csv().encode('utf-8')
 
 csv = convert_df(pred_df)
 
