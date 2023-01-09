@@ -32,19 +32,19 @@ if st.button("Predict"):
     pred_df.to_csv('salida.csv', header=True, index_label='N°')
     pred_df.head()
     st.write(pred_df)
-    output=pd.read_csv('salida.csv')
-    print(output['Prediccion'].unique())
-    prediccion={0:'Fraude',
+    
+   
+    # Different ways to use the API
+output=pd.read_csv('salida.csv')
+print(output['Prediccion'].unique())
+prediccion={0:'Fraude',
             1:'No Fraude',      
             }
-    output['Tipo_prediccion']=output['Prediccion'].map(prediccion)
+output['Tipo_prediccion']=output['Prediccion'].map(prediccion)
     # end def
-    join=pd.merge(dataframe,output, how='outer', on='N°')
-    st.write(join)
-    reporte=join.to_excel('reporte.csv')
-    # Different ways to use the API
-
-
+join=pd.merge(dataframe,output, how='outer', on='N°')
+st.write(join)
+reporte=join.to_excel('reporte.csv')
 @st.experimental_memo
 def convert_df(join):
    return join.to_csv(index=False).encode('utf-8')
