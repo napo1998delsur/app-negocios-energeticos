@@ -44,8 +44,7 @@ if st.button("Predict"):
     reporte=join.to_excel('reporte.csv')
     # Different ways to use the API
 
-    
-join=pd.merge(dataframe,output, how='outer', on='N°')
+
 @st.experimental_memo
 def convert_df(join):
    return join.to_csv(index=False).encode('utf-8')
@@ -56,7 +55,7 @@ csv = convert_df(join)
 st.download_button(
    "Press to Download",
    csv,
-   "file.csv",
+   "reporte.csv",
    "text/csv",
    key='download-csv'
 )
