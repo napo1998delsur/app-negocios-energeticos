@@ -21,7 +21,7 @@ if uploaded_file is not None:
 # Load  the model from disk
 
 if st.button("Predict"):
-    pickle_in = open('modelinicial.pkl', 'rb')
+    pickle_in = open(r'C:\Users\nperez\Documents\GitHub\app-negocios-energeticos\modelinicial.pkl', 'rb')
     model = pickle.load(pickle_in)
     y=model.predict([[dataframe]])
     pred_df = pd.DataFrame(y,columns=["Prediccion"])
@@ -44,13 +44,22 @@ if st.button("Predict"):
     reporte=join.to_excel('reporte.csv')
     # Different ways to use the API
 
-reporte=pd.read('reporte.csv')
-st.download_button('Download CSV',reporte)  # Defaults to 'text/plain'
-with open('reporte.csv') as f:
-   st.download_button('Download CSV', f)
+    
+
+@st.experimental_memo
+def convert_df(join):
+   return join.to_csv(index=False).encode('utf-8')
 
 
+csv = convert_df(join)
 
+st.download_button(
+   "Press to Download",
+   csv,
+   "file.csv",
+   "text/csv",
+   key='download-csv'
+)
 
 
 
