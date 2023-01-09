@@ -44,6 +44,7 @@ if st.button("Predict"):
     reporte=join.to_excel('reporte.csv')
     # Different ways to use the API
 
+reporte=pd.read('reporte.csv')
 st.download_button('Download CSV',reporte)  # Defaults to 'text/plain'
 with open('reporte.csv') as f:
    st.download_button('Download CSV', f)
