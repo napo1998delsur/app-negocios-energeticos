@@ -32,8 +32,8 @@ if st.button("Predict"):
     pred_df.to_csv('salida.csv', header=True, index_label='N°')
     pred_df.head()
     st.write(pred_df)
-    
-   
+
+
     # Different ways to use the API
 output=pd.read_csv('salida.csv')
 print(output['Prediccion'].unique())
