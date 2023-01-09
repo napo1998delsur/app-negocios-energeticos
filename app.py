@@ -45,7 +45,7 @@ if st.button("Predict"):
     # Different ways to use the API
 
     
-
+join=pd.merge(dataframe,output, how='outer', on='N°')
 @st.experimental_memo
 def convert_df(join):
    return join.to_csv(index=False).encode('utf-8')
